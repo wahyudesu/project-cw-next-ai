@@ -1,6 +1,7 @@
 import { createCallerFactory, createTRPCRouter } from "../trpc";
 import { userRouter } from "./user";
 import { postRouter } from "./post";
+import { inngestRouter } from "./inngest";
 
 /**
  * Root Router - combine all routers here
@@ -8,6 +9,7 @@ import { postRouter } from "./post";
 export const appRouter = createTRPCRouter({
 	user: userRouter,
 	post: postRouter,
+	inngest: inngestRouter,
 });
 
 // Export type for client

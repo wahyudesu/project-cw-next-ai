@@ -22,7 +22,7 @@ export const sendWelcomeEmail = inngest.createFunction(
 		const { email, name } = event.data;
 
 		// Step 1: Validate email
-		const isValid = await step.run("validate-email", async () => {
+		await step.run("validate-email", async () => {
 			console.log(`📧 Validating email: ${email}`);
 			// Simulasi validasi
 			const valid = email && email.includes("@");
