@@ -1,14 +1,31 @@
 "use client";
 
 import { useState } from "react";
-import { QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
+import { createTRPCReact } from "@trpc/react-query";
 import superjson from "superjson";
-import { trpc } from "@/trpc/client";
-import { makeQueryClient } from "@/trpc/query-client";
+import type { AppRouter } from "@/server/routers";
+
+/**
+ * tRPC React hooks untuk Client Components
+ * Usage: trpc.user.getAll.useQuery()
+ */
+export const trpc = createTRPCReact<AppRouter>();
 
 // Browser singleton untuk query client
-let browserQueryClient: ReturnType<typeof makeQueryClient> | undefined = undefined;
+let browserQueryClient: QueryClient | undefined = undefined;
+
+function makeQueryClient() {
+	return new QueryClient({
+		defaultOptions: {
+			queries: {
+				// Stale time untuk SSR - hindari refetching segera di client
+				staleTime: 60 * 1000,
+			},
+		},
+	});
+}
 
 function getQueryClient() {
 	if (typeof window === "undefined") {
@@ -27,7 +44,7 @@ function getBaseUrl() {
 	return `http://localhost:${process.env.PORT ?? 3000}`;
 }
 
-export function TRPCProvider({ children }: { children: React.ReactNode }) {
+export function TRPCReactProvider({ children }: { children: React.ReactNode }) {
 	const queryClient = getQueryClient();
 
 	const [trpcClient] = useState(() =>

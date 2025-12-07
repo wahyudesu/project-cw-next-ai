@@ -4,16 +4,18 @@ import { UsersClient } from "@/components/users-client";
 import { UsersServer } from "@/components/users-server";
 import { CreatePostClient } from "@/components/create-post-client";
 import { PostsClient } from "@/components/posts-client";
-import { HydrateClient, serverTrpc } from "@/trpc/server";
+import { HydrateClient, getServerHelpers } from "@/trpc/server";
+import { dehydrate } from "@tanstack/react-query";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-	// Prefetch data di server - akan dikirim ke client via HydrateClient
-	void serverTrpc.post.getAll.prefetch();
+	// Get server helpers and prefetch data
+	const helpers = await getServerHelpers();
+	await helpers.post.getAll.prefetch();
 
 	return (
-		<HydrateClient>
+		<HydrateClient state={dehydrate(helpers.queryClient)}>
 			<div className="min-h-screen p-8 font-sans">
 				<div className="max-w-6xl mx-auto space-y-8">
 					{/* Header */}
@@ -61,7 +63,7 @@ export default async function Home() {
 							<div className="p-4 border border-green-200 dark:border-green-800 rounded-lg">
 								<p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
 									Data di-fetch langsung di server menggunakan{" "}
-									<code>getServerCaller().user.getAll()</code>
+									<code>helpers.user.getAll.fetch()</code>
 								</p>
 								<Suspense
 									fallback={
@@ -101,7 +103,7 @@ export default async function Home() {
 							</div>
 							<div className="p-4 border border-orange-200 dark:border-orange-800 rounded-lg">
 								<p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-									Data di-prefetch di server dengan <code>serverTrpc.post.getAll.prefetch()</code>,
+									Data di-prefetch di server dengan <code>helpers.post.getAll.prefetch()</code>,
 									<br />
 									lalu digunakan di client dengan <code>trpc.post.getAll.useQuery()</code>
 								</p>

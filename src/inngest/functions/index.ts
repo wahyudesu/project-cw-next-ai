@@ -5,3 +5,4 @@
  */
 export { helloWorld } from "./hello-world";
 export { sendWelcomeEmail } from "./send-welcome-email";
+export { agents } from "./agents";

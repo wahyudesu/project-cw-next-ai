@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { HydrateClient, serverTrpc, getServerCaller } from "@/trpc/server";
+import { HydrateClient, getServerHelpers } from "@/trpc/server";
 import { PostsClient } from "@/components/posts-client";
+import { dehydrate } from "@tanstack/react-query";
 
 export const dynamic = "force-dynamic";
 
@@ -14,22 +15,26 @@ export const dynamic = "force-dynamic";
  * 4. Client component tetap bisa refetch, mutate, dll
  */
 export default async function PrefetchDemo() {
-	// Method 1: Prefetch untuk client components
-	// Data akan di-dehydrate dan dikirim ke client
-	void serverTrpc.post.getAll.prefetch();
-	void serverTrpc.user.getAll.prefetch();
+	// Get server helpers
+	const helpers = await getServerHelpers();
+	
+	// Prefetch untuk client components
+	await helpers.post.getAll.prefetch();
+	await helpers.user.getAll.prefetch();
 
-	// Method 2: Direct server call untuk server component
-	// Data digunakan langsung di server, tidak dikirim ke client cache
-	const serverCaller = await getServerCaller();
+	// Untuk stats, kita fetch langsung di server
+	const users = await helpers.user.getAll.fetch();
+	const posts = await helpers.post.getAll.fetch();
+	const publishedPosts = await helpers.post.getPublished.fetch();
+
 	const stats = {
-		totalUsers: (await serverCaller.user.getAll()).length,
-		totalPosts: (await serverCaller.post.getAll()).length,
-		publishedPosts: (await serverCaller.post.getPublished()).length,
+		totalUsers: users.length,
+		totalPosts: posts.length,
+		publishedPosts: publishedPosts.length,
 	};
 
 	return (
-		<HydrateClient>
+		<HydrateClient state={dehydrate(helpers.queryClient)}>
 			<div className="min-h-screen p-8 font-sans">
 				<div className="max-w-4xl mx-auto space-y-8">
 					{/* Header */}
@@ -61,7 +66,7 @@ export default async function PrefetchDemo() {
 							</div>
 						</div>
 						<p className="mt-4 text-xs text-gray-500 dark:text-gray-400">
-							Data ini di-render di server menggunakan <code>getServerCaller()</code> - tidak ada JavaScript
+							Data ini di-render di server menggunakan <code>helpers.*.fetch()</code> - tidak ada JavaScript
 							yang dikirim ke client untuk bagian ini.
 						</p>
 					</section>
@@ -84,7 +89,7 @@ export default async function PrefetchDemo() {
 						<h3 className="text-lg font-semibold">🔍 Apa yang terjadi?</h3>
 						<ol className="list-decimal list-inside space-y-2 text-sm text-gray-600 dark:text-gray-400">
 							<li>
-								Server Component memanggil <code>serverTrpc.post.getAll.prefetch()</code>
+								Server Component memanggil <code>helpers.post.getAll.prefetch()</code>
 							</li>
 							<li>Data di-fetch dari database di server</li>
 							<li>
@@ -111,11 +116,12 @@ export default async function PrefetchDemo() {
 						<pre className="text-sm">
 							{`// Di Server Component (page.tsx)
 export default async function Page() {
-  // Prefetch data untuk client components
-  void serverTrpc.post.getAll.prefetch();
+  // Get server helpers dan prefetch data
+  const helpers = await getServerHelpers();
+  await helpers.post.getAll.prefetch();
   
   return (
-    <HydrateClient>
+    <HydrateClient state={dehydrate(helpers.queryClient)}>
       <PostsClient /> {/* Client component */}
     </HydrateClient>
   );

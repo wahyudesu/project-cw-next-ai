@@ -1,4 +1,4 @@
-import { getServerCaller } from "@/trpc/server";
+import { getServerHelpers } from "@/trpc/server";
 
 /**
  * Server Component - Users List
@@ -7,8 +7,8 @@ import { getServerCaller } from "@/trpc/server";
  */
 export async function UsersServer() {
 	// Direct server call - tidak ada network request!
-	const serverCaller = await getServerCaller();
-	const users = await serverCaller.user.getAll();
+	const helpers = await getServerHelpers();
+	const users = await helpers.user.getAll.fetch();
 
 	return (
 		<div className="space-y-2">

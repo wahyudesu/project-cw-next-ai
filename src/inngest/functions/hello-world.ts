@@ -1,11 +1,5 @@
 import { inngest } from "../client";
 
-/**
- * Hello World Function
- *
- * Function pertama untuk testing Inngest.
- * Triggered by event: "test/hello.world"
- */
 export const helloWorld = inngest.createFunction(
 	{
 		id: "hello-world", // Unique function ID
