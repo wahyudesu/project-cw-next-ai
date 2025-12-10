@@ -29,7 +29,7 @@ export function CreatePostClient() {
 			createPost.mutate({
 				title,
 				content: content || undefined,
-				authorId: parseInt(authorId),
+				authorId: parseInt(authorId, 10),
 			});
 		}
 	};
@@ -64,7 +64,9 @@ export function CreatePostClient() {
 				/>
 			</div>
 			<div>
-				<label className="block text-sm font-medium mb-1">Content (optional)</label>
+				<label className="block text-sm font-medium mb-1">
+					Content (optional)
+				</label>
 				<textarea
 					value={content}
 					onChange={(e) => setContent(e.target.value)}

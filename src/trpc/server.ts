@@ -1,9 +1,9 @@
 import "server-only";
-import { cache } from "react";
 import { createServerSideHelpers } from "@trpc/react-query/server";
+import { cache } from "react";
+import superjson from "superjson";
 import { appRouter } from "@/server/routers";
 import { createTRPCContext } from "@/server/trpc";
-import superjson from "superjson";
 
 /**
  * Create server-side helpers with proper context
@@ -11,7 +11,7 @@ import superjson from "superjson";
  */
 export const getServerHelpers = cache(async () => {
 	const ctx = await createTRPCContext();
-	
+
 	return createServerSideHelpers({
 		router: appRouter,
 		ctx,

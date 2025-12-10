@@ -1,5 +1,5 @@
+import { extractTextFromAgentResult, jokeAgent } from "../agents/joke-agent";
 import { inngest } from "../client";
-import { jokeAgent, extractTextFromAgentResult } from "../agents/joke-agent";
 
 export const agents = inngest.createFunction(
 	{
@@ -13,5 +13,5 @@ export const agents = inngest.createFunction(
 		const result = extractTextFromAgentResult(output);
 
 		return { result };
-	}
+	},
 );

@@ -13,7 +13,9 @@ export function PostsClient() {
 	if (isLoading) {
 		return (
 			<div className="p-4 bg-purple-50 dark:bg-purple-950 rounded-lg">
-				<p className="text-purple-600 dark:text-purple-400">⏳ Loading posts...</p>
+				<p className="text-purple-600 dark:text-purple-400">
+					⏳ Loading posts...
+				</p>
 			</div>
 		);
 	}
@@ -21,7 +23,9 @@ export function PostsClient() {
 	if (error) {
 		return (
 			<div className="p-4 bg-red-50 dark:bg-red-950 rounded-lg">
-				<p className="text-red-600 dark:text-red-400">❌ Error: {error.message}</p>
+				<p className="text-red-600 dark:text-red-400">
+					❌ Error: {error.message}
+				</p>
 			</div>
 		);
 	}
@@ -51,9 +55,13 @@ export function PostsClient() {
 							</span>
 						</div>
 						{post.content && (
-							<p className="mt-2 text-gray-600 dark:text-gray-300 text-sm">{post.content}</p>
+							<p className="mt-2 text-gray-600 dark:text-gray-300 text-sm">
+								{post.content}
+							</p>
 						)}
-						<p className="mt-2 text-xs text-gray-400">by {post.author.name || post.author.email}</p>
+						<p className="mt-2 text-xs text-gray-400">
+							by {post.author.name || post.author.email}
+						</p>
 					</div>
 				))
 			)}

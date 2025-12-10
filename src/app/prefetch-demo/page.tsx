@@ -1,7 +1,7 @@
-import Link from "next/link";
-import { HydrateClient, getServerHelpers } from "@/trpc/server";
-import { PostsClient } from "@/components/posts-client";
 import { dehydrate } from "@tanstack/react-query";
+import Link from "next/link";
+import { PostsClient } from "@/components/posts-client";
+import { getServerHelpers, HydrateClient } from "@/trpc/server";
 
 export const dynamic = "force-dynamic";
 
@@ -17,7 +17,7 @@ export const dynamic = "force-dynamic";
 export default async function PrefetchDemo() {
 	// Get server helpers
 	const helpers = await getServerHelpers();
-	
+
 	// Prefetch untuk client components
 	await helpers.post.getAll.prefetch();
 	await helpers.user.getAll.prefetch();
@@ -44,30 +44,40 @@ export default async function PrefetchDemo() {
 						</Link>
 						<h1 className="text-3xl font-bold">🚀 Prefetching Demo</h1>
 						<p className="text-gray-600 dark:text-gray-400">
-							Demonstrasi prefetching data di Server Component untuk Client Component
+							Demonstrasi prefetching data di Server Component untuk Client
+							Component
 						</p>
 					</header>
 
 					{/* Stats dari Server (langsung di-render, no hydration) */}
 					<section className="p-6 bg-linear-to-r from-blue-50 to-purple-50 dark:from-blue-950 dark:to-purple-950 rounded-xl">
-						<h2 className="text-lg font-semibold mb-4">📊 Stats (Server-rendered)</h2>
+						<h2 className="text-lg font-semibold mb-4">
+							📊 Stats (Server-rendered)
+						</h2>
 						<div className="grid grid-cols-3 gap-4 text-center">
 							<div className="p-4 bg-white dark:bg-gray-800 rounded-lg">
-								<p className="text-3xl font-bold text-blue-500">{stats.totalUsers}</p>
+								<p className="text-3xl font-bold text-blue-500">
+									{stats.totalUsers}
+								</p>
 								<p className="text-sm text-gray-500">Total Users</p>
 							</div>
 							<div className="p-4 bg-white dark:bg-gray-800 rounded-lg">
-								<p className="text-3xl font-bold text-purple-500">{stats.totalPosts}</p>
+								<p className="text-3xl font-bold text-purple-500">
+									{stats.totalPosts}
+								</p>
 								<p className="text-sm text-gray-500">Total Posts</p>
 							</div>
 							<div className="p-4 bg-white dark:bg-gray-800 rounded-lg">
-								<p className="text-3xl font-bold text-green-500">{stats.publishedPosts}</p>
+								<p className="text-3xl font-bold text-green-500">
+									{stats.publishedPosts}
+								</p>
 								<p className="text-sm text-gray-500">Published</p>
 							</div>
 						</div>
 						<p className="mt-4 text-xs text-gray-500 dark:text-gray-400">
-							Data ini di-render di server menggunakan <code>helpers.*.fetch()</code> - tidak ada JavaScript
-							yang dikirim ke client untuk bagian ini.
+							Data ini di-render di server menggunakan{" "}
+							<code>helpers.*.fetch()</code> - tidak ada JavaScript yang dikirim
+							ke client untuk bagian ini.
 						</p>
 					</section>
 
@@ -89,30 +99,38 @@ export default async function PrefetchDemo() {
 						<h3 className="text-lg font-semibold">🔍 Apa yang terjadi?</h3>
 						<ol className="list-decimal list-inside space-y-2 text-sm text-gray-600 dark:text-gray-400">
 							<li>
-								Server Component memanggil <code>helpers.post.getAll.prefetch()</code>
+								Server Component memanggil{" "}
+								<code>helpers.post.getAll.prefetch()</code>
 							</li>
 							<li>Data di-fetch dari database di server</li>
 							<li>
-								Data di-serialize dan dikirim ke client sebagai bagian dari HTML (dehydrated state)
+								Data di-serialize dan dikirim ke client sebagai bagian dari HTML
+								(dehydrated state)
 							</li>
 							<li>
-								React Query di client menerima data ini (hydration) dan mengisi cache
+								React Query di client menerima data ini (hydration) dan mengisi
+								cache
 							</li>
 							<li>
-								<code>PostsClient</code> memanggil <code>trpc.post.getAll.useQuery()</code>
+								<code>PostsClient</code> memanggil{" "}
+								<code>trpc.post.getAll.useQuery()</code>
 							</li>
 							<li>
-								Data sudah ada di cache! Tidak ada loading state, tidak ada network request
+								Data sudah ada di cache! Tidak ada loading state, tidak ada
+								network request
 							</li>
 							<li>
-								Client component tetap bisa refetch, invalidate cache, dan lakukan mutations
+								Client component tetap bisa refetch, invalidate cache, dan
+								lakukan mutations
 							</li>
 						</ol>
 					</section>
 
 					{/* Code Example */}
 					<section className="p-6 bg-gray-900 text-gray-100 rounded-xl space-y-4 overflow-x-auto">
-						<h3 className="text-lg font-semibold text-white">💻 Code Example</h3>
+						<h3 className="text-lg font-semibold text-white">
+							💻 Code Example
+						</h3>
 						<pre className="text-sm">
 							{`// Di Server Component (page.tsx)
 export default async function Page() {

@@ -1,7 +1,7 @@
 import { createCallerFactory, createTRPCRouter } from "../trpc";
-import { userRouter } from "./user";
-import { postRouter } from "./post";
 import { inngestRouter } from "./inngest";
+import { postRouter } from "./post";
+import { userRouter } from "./user";
 
 /**
  * Root Router - combine all routers here

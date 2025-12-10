@@ -25,7 +25,7 @@ export const sendWelcomeEmail = inngest.createFunction(
 		await step.run("validate-email", async () => {
 			console.log(`📧 Validating email: ${email}`);
 			// Simulasi validasi
-			const valid = email && email.includes("@");
+			const valid = email?.includes("@");
 			if (!valid) throw new Error("Invalid email address");
 			return { valid: true };
 		});
@@ -72,5 +72,5 @@ The Team
 			email,
 			sentAt: new Date().toISOString(),
 		};
-	}
+	},
 );

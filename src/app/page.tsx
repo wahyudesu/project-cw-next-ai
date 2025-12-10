@@ -1,11 +1,11 @@
-import { Suspense } from "react";
+import { dehydrate } from "@tanstack/react-query";
 import Link from "next/link";
-import { UsersClient } from "@/components/users-client";
-import { UsersServer } from "@/components/users-server";
+import { Suspense } from "react";
 import { CreatePostClient } from "@/components/create-post-client";
 import { PostsClient } from "@/components/posts-client";
-import { HydrateClient, getServerHelpers } from "@/trpc/server";
-import { dehydrate } from "@tanstack/react-query";
+import { UsersClient } from "@/components/users-client";
+import { UsersServer } from "@/components/users-server";
+import { getServerHelpers, HydrateClient } from "@/trpc/server";
 
 export const dynamic = "force-dynamic";
 
@@ -24,7 +24,8 @@ export default async function Home() {
 							tRPC + Next.js Demo
 						</h1>
 						<p className="text-gray-600 dark:text-gray-400">
-							Eksperimen dengan Client Components, Server Components, dan Prefetching
+							Eksperimen dengan Client Components, Server Components, dan
+							Prefetching
 						</p>
 						<Link
 							href="/prefetch-demo"
@@ -42,11 +43,14 @@ export default async function Home() {
 								<span className="px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded">
 									CLIENT
 								</span>
-								<h2 className="text-xl font-semibold">Users (Client Component)</h2>
+								<h2 className="text-xl font-semibold">
+									Users (Client Component)
+								</h2>
 							</div>
 							<div className="p-4 border border-blue-200 dark:border-blue-800 rounded-lg">
 								<p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-									Data di-fetch dari client menggunakan <code>trpc.user.getAll.useQuery()</code>
+									Data di-fetch dari client menggunakan{" "}
+									<code>trpc.user.getAll.useQuery()</code>
 								</p>
 								<UsersClient />
 							</div>
@@ -58,7 +62,9 @@ export default async function Home() {
 								<span className="px-2 py-1 text-xs bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded">
 									SERVER
 								</span>
-								<h2 className="text-xl font-semibold">Users (Server Component)</h2>
+								<h2 className="text-xl font-semibold">
+									Users (Server Component)
+								</h2>
 							</div>
 							<div className="p-4 border border-green-200 dark:border-green-800 rounded-lg">
 								<p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
@@ -87,7 +93,8 @@ export default async function Home() {
 							</div>
 							<div className="p-4 border border-purple-200 dark:border-purple-800 rounded-lg">
 								<p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-									Mutation menggunakan <code>trpc.post.create.useMutation()</code>
+									Mutation menggunakan{" "}
+									<code>trpc.post.create.useMutation()</code>
 								</p>
 								<CreatePostClient />
 							</div>
@@ -103,9 +110,11 @@ export default async function Home() {
 							</div>
 							<div className="p-4 border border-orange-200 dark:border-orange-800 rounded-lg">
 								<p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-									Data di-prefetch di server dengan <code>helpers.post.getAll.prefetch()</code>,
+									Data di-prefetch di server dengan{" "}
+									<code>helpers.post.getAll.prefetch()</code>,
 									<br />
-									lalu digunakan di client dengan <code>trpc.post.getAll.useQuery()</code>
+									lalu digunakan di client dengan{" "}
+									<code>trpc.post.getAll.useQuery()</code>
 								</p>
 								<PostsClient />
 							</div>
@@ -121,8 +130,8 @@ export default async function Home() {
 									🖥️ Client Component
 								</h4>
 								<p className="text-gray-600 dark:text-gray-400">
-									Data di-fetch setelah halaman load. Ada loading state. Cocok untuk data yang
-									sering berubah atau butuh interaksi.
+									Data di-fetch setelah halaman load. Ada loading state. Cocok
+									untuk data yang sering berubah atau butuh interaksi.
 								</p>
 							</div>
 							<div className="p-4 bg-green-50 dark:bg-green-950 rounded-lg">
@@ -130,8 +139,8 @@ export default async function Home() {
 									⚡ Server Component
 								</h4>
 								<p className="text-gray-600 dark:text-gray-400">
-									Data sudah ada saat HTML dikirim. Tidak ada loading state. Zero client JS.
-									Cocok untuk data statis.
+									Data sudah ada saat HTML dikirim. Tidak ada loading state.
+									Zero client JS. Cocok untuk data statis.
 								</p>
 							</div>
 							<div className="p-4 bg-orange-50 dark:bg-orange-950 rounded-lg">
@@ -139,8 +148,8 @@ export default async function Home() {
 									🚀 Prefetching
 								</h4>
 								<p className="text-gray-600 dark:text-gray-400">
-									Data di-fetch di server, di-hydrate ke client. Kombinasi terbaik: fast initial
-									load + client interactivity.
+									Data di-fetch di server, di-hydrate ke client. Kombinasi
+									terbaik: fast initial load + client interactivity.
 								</p>
 							</div>
 						</div>

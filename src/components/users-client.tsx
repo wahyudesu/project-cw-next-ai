@@ -12,7 +12,12 @@ export function UsersClient() {
 	const [newUserName, setNewUserName] = useState("");
 
 	// Query untuk get all users
-	const { data: users, isLoading, error, refetch } = trpc.user.getAll.useQuery();
+	const {
+		data: users,
+		isLoading,
+		error,
+		refetch,
+	} = trpc.user.getAll.useQuery();
 
 	// Mutation untuk create user
 	const createUser = trpc.user.create.useMutation({
@@ -31,7 +36,9 @@ export function UsersClient() {
 	if (isLoading) {
 		return (
 			<div className="p-4 bg-blue-50 dark:bg-blue-950 rounded-lg">
-				<p className="text-blue-600 dark:text-blue-400">⏳ Loading users dari client...</p>
+				<p className="text-blue-600 dark:text-blue-400">
+					⏳ Loading users dari client...
+				</p>
 			</div>
 		);
 	}
@@ -39,7 +46,9 @@ export function UsersClient() {
 	if (error) {
 		return (
 			<div className="p-4 bg-red-50 dark:bg-red-950 rounded-lg">
-				<p className="text-red-600 dark:text-red-400">❌ Error: {error.message}</p>
+				<p className="text-red-600 dark:text-red-400">
+					❌ Error: {error.message}
+				</p>
 			</div>
 		);
 	}
@@ -86,7 +95,9 @@ export function UsersClient() {
 			{/* List users */}
 			<div className="space-y-2">
 				{users?.length === 0 ? (
-					<p className="text-gray-500 dark:text-gray-400 italic">Belum ada user. Tambahkan user baru!</p>
+					<p className="text-gray-500 dark:text-gray-400 italic">
+						Belum ada user. Tambahkan user baru!
+					</p>
 				) : (
 					users?.map((user) => (
 						<div
@@ -95,12 +106,15 @@ export function UsersClient() {
 						>
 							<div>
 								<p className="font-medium">{user.name || "Unnamed"}</p>
-								<p className="text-sm text-gray-500 dark:text-gray-400">{user.email}</p>
+								<p className="text-sm text-gray-500 dark:text-gray-400">
+									{user.email}
+								</p>
 								<p className="text-xs text-gray-400 dark:text-gray-500">
 									{user.posts.length} posts
 								</p>
 							</div>
 							<button
+								type="button"
 								onClick={() => deleteUser.mutate({ id: user.id })}
 								disabled={deleteUser.isPending}
 								className="px-3 py-1 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-950 rounded"

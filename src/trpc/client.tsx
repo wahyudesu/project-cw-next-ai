@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
+import { useState } from "react";
 import superjson from "superjson";
 import type { AppRouter } from "@/server/routers";
 
@@ -14,7 +14,7 @@ import type { AppRouter } from "@/server/routers";
 export const trpc = createTRPCReact<AppRouter>();
 
 // Browser singleton untuk query client
-let browserQueryClient: QueryClient | undefined = undefined;
+let browserQueryClient: QueryClient | undefined;
 
 function makeQueryClient() {
 	return new QueryClient({
@@ -55,7 +55,7 @@ export function TRPCReactProvider({ children }: { children: React.ReactNode }) {
 					transformer: superjson,
 				}),
 			],
-		})
+		}),
 	);
 
 	return (

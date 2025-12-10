@@ -26,5 +26,5 @@ export const helloWorld = inngest.createFunction(
 		});
 
 		return result;
-	}
+	},
 );

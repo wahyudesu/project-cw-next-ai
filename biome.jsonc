@@ -1,0 +1,98 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.3.8/schema.json",
+	"vcs": {
+		"enabled": true,
+		"clientKind": "git",
+		"useIgnoreFile": true
+	},
+	"files": {
+		"ignoreUnknown": false,
+		"includes": [
+			"**/*.ts",
+			"**/*.tsx",
+			"**/*.js",
+			"**/*.jsx",
+			"**/*.css",
+			"**/*.json",
+			// Generated file by wrangler - contains many `any` types
+			"!cloudflare-env.d.ts"
+		]
+	},
+	"formatter": {
+		"enabled": true,
+		"indentStyle": "tab"
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"a11y": {
+				// Biome requires explicit htmlFor/id but adjacent label+input is valid HTML
+				"noLabelWithoutControl": "off",
+				"useFocusableInteractive": "warn",
+				"useSemanticElements": "warn",
+				"useKeyWithClickEvents": "warn",
+				"useAriaPropsForRole": "warn"
+			},
+			"suspicious": {
+				// Sometimes index key is acceptable when list is static
+				"noArrayIndexKey": "warn"
+			},
+			"security": {
+				// Sometimes necessary for controlled content (e.g., charts)
+				"noDangerouslySetInnerHtml": "warn"
+			}
+		}
+	},
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "double"
+		}
+	},
+	"css": {
+		"parser": {
+			"cssModules": true,
+			// Enable Tailwind CSS directives (@apply, @theme, etc.)
+			"tailwindDirectives": true
+		},
+		"linter": {
+			// Disable CSS linting - using Tailwind CSS v4
+			"enabled": false
+		}
+	},
+	"assist": {
+		"enabled": true,
+		"actions": {
+			"source": {
+				"organizeImports": "on"
+			}
+		}
+	},
+	"overrides": [
+		{
+			// shadcn/ui components - generated code with specific patterns
+			"includes": ["src/components/ui/**"],
+			"linter": {
+				"rules": {
+					"a11y": {
+						// UI library uses role attributes intentionally
+						"useSemanticElements": "off",
+						"useFocusableInteractive": "off",
+						"useKeyWithClickEvents": "off",
+						"useAriaPropsForRole": "off"
+					},
+					"suspicious": {
+						// UI library uses array index for static lists
+						"noArrayIndexKey": "off",
+						// Sidebar uses document.cookie for state persistence
+						"noDocumentCookie": "off"
+					},
+					"security": {
+						// Chart component uses dangerouslySetInnerHTML for CSS
+						"noDangerouslySetInnerHtml": "off"
+					}
+				}
+			}
+		}
+	]
+}

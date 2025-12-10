@@ -3,6 +3,7 @@
  *
  * Semua functions yang di-export di sini akan di-serve via API route
  */
+
+export { agents } from "./agents";
 export { helloWorld } from "./hello-world";
 export { sendWelcomeEmail } from "./send-welcome-email";
-export { agents } from "./agents";

@@ -1,10 +1,10 @@
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure } from "../trpc";
-import { inngest } from "@/inngest/client";
 import {
-	jokeAgent,
 	extractTextFromAgentResult,
+	jokeAgent,
 } from "@/inngest/agents/joke-agent";
+import { inngest } from "@/inngest/client";
+import { createTRPCRouter, publicProcedure } from "../trpc";
 
 /**
  * Inngest Router - untuk trigger background jobs via tRPC
@@ -15,7 +15,7 @@ export const inngestRouter = createTRPCRouter({
 		.input(
 			z.object({
 				text: z.string().optional(),
-			})
+			}),
 		)
 		.mutation(async ({ input }) => {
 			await inngest.send({
@@ -33,7 +33,7 @@ export const inngestRouter = createTRPCRouter({
 		.input(
 			z.object({
 				topic: z.string().min(1, "Topic harus diisi"),
-			})
+			}),
 		)
 		.mutation(async ({ input }) => {
 			// Kirim event ke Inngest untuk tracking di dashboard

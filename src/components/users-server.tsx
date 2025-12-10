@@ -26,7 +26,9 @@ export async function UsersServer() {
 							<span className="text-green-600 dark:text-green-400">✓</span>
 							<div>
 								<p className="font-medium">{user.name || "Unnamed"}</p>
-								<p className="text-sm text-gray-500 dark:text-gray-400">{user.email}</p>
+								<p className="text-sm text-gray-500 dark:text-gray-400">
+									{user.email}
+								</p>
 								<p className="text-xs text-gray-400">
 									{user.posts.length} posts •{" "}
 									{user.posts.filter((p) => p.published).length} published

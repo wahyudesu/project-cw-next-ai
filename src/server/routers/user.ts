@@ -10,12 +10,14 @@ export const userRouter = createTRPCRouter({
 	}),
 
 	// Get user by ID
-	getById: publicProcedure.input(z.object({ id: z.number() })).query(async ({ ctx, input }) => {
-		return ctx.prisma.user.findUnique({
-			where: { id: input.id },
-			include: { posts: true },
-		});
-	}),
+	getById: publicProcedure
+		.input(z.object({ id: z.number() }))
+		.query(async ({ ctx, input }) => {
+			return ctx.prisma.user.findUnique({
+				where: { id: input.id },
+				include: { posts: true },
+			});
+		}),
 
 	// Create user
 	create: publicProcedure
@@ -23,7 +25,7 @@ export const userRouter = createTRPCRouter({
 			z.object({
 				email: z.string().email(),
 				name: z.string().optional(),
-			})
+			}),
 		)
 		.mutation(async ({ ctx, input }) => {
 			return ctx.prisma.user.create({
@@ -38,7 +40,7 @@ export const userRouter = createTRPCRouter({
 				id: z.number(),
 				email: z.string().email().optional(),
 				name: z.string().optional(),
-			})
+			}),
 		)
 		.mutation(async ({ ctx, input }) => {
 			const { id, ...data } = input;
@@ -49,9 +51,11 @@ export const userRouter = createTRPCRouter({
 		}),
 
 	// Delete user
-	delete: publicProcedure.input(z.object({ id: z.number() })).mutation(async ({ ctx, input }) => {
-		return ctx.prisma.user.delete({
-			where: { id: input.id },
-		});
-	}),
+	delete: publicProcedure
+		.input(z.object({ id: z.number() }))
+		.mutation(async ({ ctx, input }) => {
+			return ctx.prisma.user.delete({
+				where: { id: input.id },
+			});
+		}),
 });

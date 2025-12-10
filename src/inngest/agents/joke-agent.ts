@@ -1,4 +1,4 @@
-import { openai, createAgent } from "@inngest/agent-kit";
+import { createAgent, openai } from "@inngest/agent-kit";
 
 // Model untuk AI agent
 const model = openai({
@@ -18,7 +18,7 @@ export const jokeAgent = createAgent({
 
 // Helper untuk extract text dari agent result
 export function extractTextFromAgentResult(
-	agentResult: Awaited<ReturnType<typeof jokeAgent.run>>
+	agentResult: Awaited<ReturnType<typeof jokeAgent.run>>,
 ): string {
 	const textMessages: string[] = [];
 
@@ -29,7 +29,7 @@ export function extractTextFromAgentResult(
 				textMessages.push(content);
 			} else if (Array.isArray(content)) {
 				const texts = content.map(
-					(c: { type: string; text: string }) => c.text
+					(c: { type: string; text: string }) => c.text,
 				);
 				textMessages.push(texts.join(""));
 			}
