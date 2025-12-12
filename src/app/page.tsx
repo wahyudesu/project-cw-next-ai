@@ -1,161 +1,130 @@
-import { dehydrate } from "@tanstack/react-query";
-import Link from "next/link";
-import { Suspense } from "react";
-import { CreatePostClient } from "@/components/create-post-client";
-import { PostsClient } from "@/components/posts-client";
-import { UsersClient } from "@/components/users-client";
-import { UsersServer } from "@/components/users-server";
-import { getServerHelpers, HydrateClient } from "@/trpc/server";
+"use client";
 
-export const dynamic = "force-dynamic";
+import {
+	ArrowRight,
+	ChevronDown,
+	Paperclip,
+	Rocket,
+	Upload,
+} from "lucide-react";
+import { useState } from "react";
+import PixelBlast from "@/components/PixelBlast";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
-export default async function Home() {
-	// Get server helpers and prefetch data
-	const helpers = await getServerHelpers();
-	await helpers.post.getAll.prefetch();
+export default function Home() {
+	const [inputValue, setInputValue] = useState("");
 
 	return (
-		<HydrateClient state={dehydrate(helpers.queryClient)}>
-			<div className="min-h-screen p-8 font-sans">
-				<div className="max-w-6xl mx-auto space-y-8">
-					{/* Header */}
-					<header className="text-center space-y-2">
-						<h1 className="text-4xl font-bold bg-linear-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
-							tRPC + Next.js Demo
-						</h1>
-						<p className="text-gray-600 dark:text-gray-400">
-							Eksperimen dengan Client Components, Server Components, dan
-							Prefetching
-						</p>
-						<Link
-							href="/prefetch-demo"
-							className="inline-block mt-4 px-4 py-2 bg-linear-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:opacity-90"
-						>
-							🚀 Lihat Prefetching Demo →
-						</Link>
-					</header>
+		<div className="relative min-h-screen w-full bg-black overflow-hidden">
+			{/* Background */}
+			<div className="absolute inset-0">
+				<PixelBlast
+					variant="circle"
+					pixelSize={6}
+					color="#B19EEF"
+					patternScale={3}
+					patternDensity={1.2}
+					pixelSizeJitter={0.5}
+					enableRipples
+					rippleSpeed={0.4}
+					rippleThickness={0.12}
+					rippleIntensityScale={1.5}
+					liquid
+					liquidStrength={0.12}
+					liquidRadius={1.2}
+					liquidWobbleSpeed={5}
+					speed={0.6}
+					edgeFade={0.25}
+					transparent
+				/>
+			</div>
 
-					{/* Main Content Grid */}
-					<div className="grid md:grid-cols-2 gap-8">
-						{/* Client Component Section */}
-						<section className="space-y-4">
-							<div className="flex items-center gap-2">
-								<span className="px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded">
-									CLIENT
-								</span>
-								<h2 className="text-xl font-semibold">
-									Users (Client Component)
-								</h2>
-							</div>
-							<div className="p-4 border border-blue-200 dark:border-blue-800 rounded-lg">
-								<p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-									Data di-fetch dari client menggunakan{" "}
-									<code>trpc.user.getAll.useQuery()</code>
-								</p>
-								<UsersClient />
-							</div>
-						</section>
+			{/* Header */}
+			<header className="relative z-20 flex items-center justify-between px-6 lg:px-12 py-6">
+				<div className="flex items-center gap-2 text-white">
+					<Rocket className="w-6 h-6" />
+					<span className="text-lg font-medium relative">rocket</span>
+				</div>
 
-						{/* Server Component Section */}
-						<section className="space-y-4">
-							<div className="flex items-center gap-2">
-								<span className="px-2 py-1 text-xs bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded">
-									SERVER
-								</span>
-								<h2 className="text-xl font-semibold">
-									Users (Server Component)
-								</h2>
-							</div>
-							<div className="p-4 border border-green-200 dark:border-green-800 rounded-lg">
-								<p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-									Data di-fetch langsung di server menggunakan{" "}
-									<code>helpers.user.getAll.fetch()</code>
-								</p>
-								<Suspense
-									fallback={
-										<div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg animate-pulse">
-											Loading...
-										</div>
-									}
-								>
-									<UsersServer />
-								</Suspense>
-							</div>
-						</section>
+				<nav className="hidden md:flex items-center gap-8 text-sm text-white">
+					<Button variant="ghost" className="">
+						Products
+					</Button>
+					<Button variant="ghost" className="">
+						Pricing
+					</Button>
+					<Button variant="ghost" className="">
+						Careers
+					</Button>
+					<Button variant="ghost" className="flex items-center gap-1">
+						Resources
+						<ChevronDown className="w-4 h-4" />
+					</Button>
+				</nav>
 
-						{/* Create Post Section */}
-						<section className="space-y-4">
-							<div className="flex items-center gap-2">
-								<span className="px-2 py-1 text-xs bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 rounded">
-									MUTATION
-								</span>
-								<h2 className="text-xl font-semibold">Create Post</h2>
-							</div>
-							<div className="p-4 border border-purple-200 dark:border-purple-800 rounded-lg">
-								<p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-									Mutation menggunakan{" "}
-									<code>trpc.post.create.useMutation()</code>
-								</p>
-								<CreatePostClient />
-							</div>
-						</section>
+				<Button
+					variant="outline"
+					className="bg-white text-black hover:bg-white/90"
+				>
+					Sign in
+				</Button>
+			</header>
 
-						{/* Posts with Prefetching */}
-						<section className="space-y-4">
-							<div className="flex items-center gap-2">
-								<span className="px-2 py-1 text-xs bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-300 rounded">
-									PREFETCH
-								</span>
-								<h2 className="text-xl font-semibold">Posts (Prefetched)</h2>
-							</div>
-							<div className="p-4 border border-orange-200 dark:border-orange-800 rounded-lg">
-								<p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-									Data di-prefetch di server dengan{" "}
-									<code>helpers.post.getAll.prefetch()</code>,
-									<br />
-									lalu digunakan di client dengan{" "}
-									<code>trpc.post.getAll.useQuery()</code>
-								</p>
-								<PostsClient />
-							</div>
-						</section>
+			{/* Main */}
+			<main className="relative z-10 flex flex-col justify-center px-6 pb-24 min-h-[calc(100vh-80px)]">
+				<div className="max-w-4xl mx-auto w-full">
+					{/* Banner */}
+					<div className="flex justify-center mb-10">
+						<div className="px-4 py-2 rounded-full bg-purple-500 border border-purple-500/30 text-sm text-white flex items-center gap-2">
+							New Release
+							<ArrowRight className="w-4 h-4" />
+						</div>
 					</div>
 
-					{/* Info Section */}
-					<section className="p-6 bg-gray-50 dark:bg-gray-900 rounded-xl space-y-4">
-						<h3 className="text-lg font-semibold">📚 Cara Kerja:</h3>
-						<div className="grid md:grid-cols-3 gap-4 text-sm">
-							<div className="p-4 bg-blue-50 dark:bg-blue-950 rounded-lg">
-								<h4 className="font-semibold text-blue-700 dark:text-blue-300 mb-2">
-									🖥️ Client Component
-								</h4>
-								<p className="text-gray-600 dark:text-gray-400">
-									Data di-fetch setelah halaman load. Ada loading state. Cocok
-									untuk data yang sering berubah atau butuh interaksi.
-								</p>
-							</div>
-							<div className="p-4 bg-green-50 dark:bg-green-950 rounded-lg">
-								<h4 className="font-semibold text-green-700 dark:text-green-300 mb-2">
-									⚡ Server Component
-								</h4>
-								<p className="text-gray-600 dark:text-gray-400">
-									Data sudah ada saat HTML dikirim. Tidak ada loading state.
-									Zero client JS. Cocok untuk data statis.
-								</p>
-							</div>
-							<div className="p-4 bg-orange-50 dark:bg-orange-950 rounded-lg">
-								<h4 className="font-semibold text-orange-700 dark:text-orange-300 mb-2">
-									🚀 Prefetching
-								</h4>
-								<p className="text-gray-600 dark:text-gray-400">
-									Data di-fetch di server, di-hydrate ke client. Kombinasi
-									terbaik: fast initial load + client interactivity.
-								</p>
+					{/* Hero */}
+					<div className="text-center mb-14">
+						<h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-4">
+							Built anything
+							<span className="animate-pulse">|</span>
+						</h1>
+						<p className="text-xl sm:text-2xl text-white/90 max-w-2xl mx-auto">
+							Build production-ready{" "}
+							<span className="font-semibold underline underline-offset-4">
+								mobile app.
+							</span>
+						</p>
+					</div>
+
+					{/* Input */}
+					<div className="max-w-3xl mx-auto">
+						<div className="bg-white rounded-2xl border shadow-xl p-4">
+							<Textarea
+								value={inputValue}
+								onChange={(e) => setInputValue(e.target.value)}
+								placeholder="What can I build for you today?"
+								className="min-h-[140px] resize-none text-lg px-4 py-3 focus-visible:ring-0 focus-visible:ring-offset-0"
+							/>
+
+							<div className="mt-4 flex items-center justify-between">
+								<div className="flex items-center gap-2">
+									<Button variant="ghost" size="icon">
+										<Paperclip className="w-5 h-5" />
+									</Button>
+									<Button variant="secondary" size="sm" className="gap-1.5">
+										<Upload className="w-4 h-4" />
+										Import
+									</Button>
+								</div>
+
+								<Button size="icon">
+									<ArrowRight className="w-5 h-5" />
+								</Button>
 							</div>
 						</div>
-					</section>
+					</div>
 				</div>
-			</div>
-		</HydrateClient>
+			</main>
+		</div>
 	);
 }

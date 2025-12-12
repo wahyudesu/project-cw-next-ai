@@ -7,67 +7,66 @@ import { Input } from "@/components/ui/input";
 import { trpc } from "@/trpc/client";
 
 const Page = () => {
-	const [topic, setTopic] = useState("");
-	const [result, setResult] = useState("");
+	// Code Agent prompt & result
+	const [codePrompt, setCodePrompt] = useState("");
+	const [codeResult, setCodeResult] = useState("");
 
-	const invokeAgent = trpc.inngest.invokeAgent.useMutation({
+	const invokeCodeAgent = trpc.inngest.invokeCodeAgent.useMutation({
 		onSuccess: (data) => {
-			toast.success("Joke berhasil dibuat!");
-			setResult(data.result);
+			toast.success("Event untuk Code Agent terkirim!");
+			setCodeResult(data.message || "Event sent");
 		},
 		onError: (error) => {
 			toast.error(error.message);
 		},
 	});
 
-	const handleSubmit = () => {
-		if (!topic.trim()) {
-			toast.error("Masukkan topik terlebih dahulu!");
+	const handleCodeSubmit = () => {
+		if (!codePrompt.trim()) {
+			toast.error("Masukkan prompt terlebih dahulu!");
 			return;
 		}
-		setResult(""); // Clear previous result
-		invokeAgent.mutate({ topic: topic.trim() });
+		setCodeResult("");
+		invokeCodeAgent.mutate({ prompt: codePrompt.trim() });
 	};
 
 	return (
 		<div className="p-4 max-w-2xl mx-auto space-y-6">
 			<div className="space-y-2">
-				<h1 className="text-2xl font-bold">AI Joke Generator</h1>
+				<h1 className="text-2xl font-bold">Code Agent</h1>
 				<p className="text-muted-foreground">
-					Masukkan topik dan AI akan membuat lelucon untuk Anda!
+					Masukkan prompt dan jalankan Code Agent (dijalankan di background via
+					Inngest).
 				</p>
 			</div>
 
+			{/* Code Agent runner */}
 			<div className="space-y-4">
 				<Input
-					value={topic}
-					onChange={(e) => setTopic(e.target.value)}
-					placeholder="Masukkan topik (misal: kucing, programmer, kopi)..."
+					value={codePrompt}
+					onChange={(e) => setCodePrompt(e.target.value)}
+					placeholder="Masukkan prompt untuk Code Agent (misal: perbaiki file X)..."
 					onKeyDown={(e) => {
-						if (e.key === "Enter" && !invokeAgent.isPending) {
-							handleSubmit();
+						if (e.key === "Enter" && !invokeCodeAgent.isPending) {
+							handleCodeSubmit();
 						}
 					}}
 				/>
 				<Button
-					disabled={invokeAgent.isPending || !topic.trim()}
-					onClick={handleSubmit}
+					disabled={invokeCodeAgent.isPending || !codePrompt.trim()}
+					onClick={handleCodeSubmit}
 					className="w-full"
 				>
-					{invokeAgent.isPending ? "Sedang membuat joke..." : "Buat Joke!"}
+					{invokeCodeAgent.isPending
+						? "Mengirim ke Code Agent..."
+						: "Jalankan Code Agent"}
 				</Button>
 			</div>
 
-			{result && (
+			{codeResult && (
 				<div className="p-4 bg-muted rounded-lg border">
-					<h3 className="font-semibold mb-2">Hasil:</h3>
-					<p className="whitespace-pre-wrap">{result}</p>
-				</div>
-			)}
-
-			{invokeAgent.isPending && (
-				<div className="flex items-center justify-center p-4">
-					<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+					<h3 className="font-semibold mb-2">Code Agent:</h3>
+					<p className="whitespace-pre-wrap">{codeResult}</p>
 				</div>
 			)}
 		</div>

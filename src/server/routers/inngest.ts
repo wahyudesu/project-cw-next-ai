@@ -50,4 +50,23 @@ export const inngestRouter = createTRPCRouter({
 
 			return { success: true, result };
 		}),
+
+	// Invoke Code Agents - trigger the code-agents Inngest function
+	invokeCodeAgent: publicProcedure
+		.input(
+			z.object({
+				prompt: z.string().min(1, "Prompt harus diisi"),
+			}),
+		)
+		.mutation(async ({ input }) => {
+			// Kirim event ke Inngest untuk dijalankan oleh code-agents
+			await inngest.send({
+				name: "agents/code-agents",
+				data: {
+					value: input.prompt,
+				},
+			});
+
+			return { success: true, message: "Code agent event sent" };
+		}),
 });

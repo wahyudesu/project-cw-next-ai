@@ -22,7 +22,7 @@ export const codeAgents = inngest.createFunction(
 	{ event: "agents/code-agents" },
 	async ({ event, step }) => {
 		const sandboxId = await step.run("get-sandbox-id", async () => {
-			const sandbox = await Sandbox.create("vibe-nextjs-test-2");
+			const sandbox = await Sandbox.create("nextjs-app-bun-2");
 			return sandbox.sandboxId;
 		});
 

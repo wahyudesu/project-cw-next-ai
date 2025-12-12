@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-	title: "tRPC Next.js Demo",
-	description: "Demo tRPC dengan Client & Server Components",
+	title: "Web AI Builder",
+	description: "Build your web application with AI",
 };
 
 export default function RootLayout({

@@ -1,6 +1,6 @@
 import { serve } from "inngest/next";
 import { inngest } from "@/inngest/client";
-import { agents, helloWorld, sendWelcomeEmail } from "@/inngest/functions";
+import { codeAgents, helloWorld } from "@/inngest/functions";
 
 /**
  * Inngest API Route
@@ -15,8 +15,7 @@ export const { GET, POST, PUT } = serve({
 	client: inngest,
 	functions: [
 		helloWorld,
-		sendWelcomeEmail,
-		agents,
+		codeAgents,
 		// Tambahkan functions baru di sini
 	],
 });
